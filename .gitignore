@@ -1,0 +1,3 @@
+# Don't include any of the build stuff
+/build
+.vscode
