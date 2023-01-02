@@ -1,7 +1,25 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "glm/glm.hpp"
 
 #include <iostream>
+
+void RunWindow(GLFWwindow* window){
+	while (!glfwWindowShouldClose(window)) {
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		glfwPollEvents();
+		glfwSwapBuffers(window);
+	}
+}
+
+void CleanUpWindow(GLFWwindow* window){
+	if(window != nullptr){
+		glfwDestroyWindow(window);
+	}
+	glfwTerminate();
+}
+
 
 int main()
 {
@@ -31,20 +49,4 @@ int main()
 	RunWindow(_mainWindow);
 
 	CleanUpWindow(_mainWindow);
-}
-
-void RunWindow(GLFWwindow* window){
-	while (!glfwWindowShouldClose(window)) {
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glfwPollEvents();
-		glfwSwapBuffers(window);
-	}
-}
-
-void CleanUpWindow(GLFWwindow* window){
-	if(window != nullptr){
-		glfwDestroyWindow(window);
-	}
-	glfwTerminate();
 }

@@ -7,6 +7,6 @@ set(SOURCES "src/main.cpp")
 add_subdirectory(dependencies)
 add_executable(BensOpenGLBase ${SOURCES})
 
-target_link_libraries(BensOpenGLBase PRIVATE glfw glad)
+target_link_libraries(BensOpenGLBase PRIVATE glfw glad glm)
 target_include_directories(BensOpenGLBase PRIVATE "src/")
 
