@@ -21,6 +21,8 @@ set(SOURCES
     "src/model/Graphics.hpp"
     "src/model/Mesh.hpp"
     "src/model/Mesh.cpp"
+    "src/model/Terrain.hpp"
+    "src/model/Terrain.cpp"
 )
 
 add_subdirectory(dependencies)

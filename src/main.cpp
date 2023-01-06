@@ -22,8 +22,6 @@ static int height = 720;
 
 ShaderProgram exampleShaderId;
 
-unsigned int textureLoc;
-
 Mesh cube;
 Mesh monkey;
 Mesh plane;
@@ -31,18 +29,17 @@ Mesh plane;
 void InitTriangle()
 {
 	exampleShaderId = ShaderProgram("resources/shaders/basic_vertex.vs", "resources/shaders/basic_fragment.fs");
-	textureLoc = glGetUniformLocation(exampleShaderId.GetId(), "textureSampler");
 
 	Texture texture = ModelLoader::LoadTexture("resources/textures/new.png");
-	cube = ModelLoader::CreateCubeMesh(0.5f, texture);
+	cube = Mesh::CreateCubeMesh(0.5f, texture);
 
 	Texture monTexture = ModelLoader::LoadTexture("resources/textures/monke2.png");
 	monkey = ModelLoader::LoadObjModel("resources/models/blender_monkey.obj", monTexture);
-	monkey.SetTranslation(glm::vec3(5,0,0));
+	monkey.SetTranslation(vec3(5,0,0));
 
 	Texture texture2 = ModelLoader::LoadTexture("resources/textures/square.png");
-	plane =  ModelLoader::CreatePlaneMesh(10, texture2);
-	plane.SetTranslation(glm::vec3(0, -5, 0));
+	plane =  Mesh::CreatePlaneMesh(10, texture2);
+	plane.SetTranslation(vec3(0, -5, 0));
 }
 
 void AnimateScale(Mesh &mesh, float time)
@@ -50,7 +47,7 @@ void AnimateScale(Mesh &mesh, float time)
 	// calculate the scale factor using a sin wave
 	float scaleFactor = 0.5f + (1.0f + std::sin(time)) / 2.0f; 
 
-	mesh.SetScale(glm::vec3(scaleFactor, scaleFactor, scaleFactor));
+	mesh.SetScale(vec3(scaleFactor, scaleFactor, scaleFactor));
 }
 
 void AnimateRotation(Mesh &mesh, float time)
@@ -66,7 +63,7 @@ void AnimateRotation(Mesh &mesh, float time)
     startTime = time;
 
     // Rotate the mesh
-    mesh.RotateBy(glm::vec3(rotationAngle, rotationAngle, rotationAngle));	
+    mesh.RotateBy(vec3(rotationAngle, rotationAngle, rotationAngle));	
 }
 
 void RunWindow(GLFWwindow* window)
@@ -74,15 +71,10 @@ void RunWindow(GLFWwindow* window)
 
 	Texture roomTexture = ModelLoader::LoadTexture("resources/textures/my-texture.bmp");
 	Mesh room = ModelLoader::LoadObjModel("resources/models/merc.obj", roomTexture);
-	monkey.SetTranslation(glm::vec3(-5,0,0));
+	monkey.SetTranslation(vec3(-5,0,0));
 
 	SetWindow(window);
 	unsigned int matrixId = glGetUniformLocation(exampleShaderId.GetId(), "MVP");
-		// Our state
-    bool show_demo_window = true;
-    bool show_another_window = false;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
 	TestWindow myTestWindow;
 	MenuBar mainMenu;
 
@@ -92,8 +84,8 @@ void RunWindow(GLFWwindow* window)
 		static double time = 0.0f;
 
 		CalculateMatrices();
-		glm::mat4 projectionMatrix = GetProjectionMatrix();
-		glm::mat4 viewMatrix = GetViewMatrix();
+		mat4 projectionMatrix = GetProjectionMatrix();
+		mat4 viewMatrix = GetViewMatrix();
 
 		AnimateScale(cube, (float) time);
 		AnimateRotation(cube, (float) time);
@@ -139,6 +131,8 @@ void CleanUpWindow(GLFWwindow* window)
 
 int main()
 {
+	// TODO: move opengl setup to new game/app class
+
 	if (glfwInit() == 0) {
 		std::cerr << "Was unable to initialize GLFW." << std::endl;
 		return 1;
@@ -174,6 +168,7 @@ int main()
 	glfwPollEvents();	
 
 	glEnable(GL_DEPTH_TEST);
+	// Performance optimisation,the culling of non-visible objects. 
 	glEnable(GL_CULL_FACE);
 
 	glEnable(GL_BLEND);

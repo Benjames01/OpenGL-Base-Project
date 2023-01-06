@@ -30,6 +30,9 @@ class Mesh
         void TranslateBy(glm::vec3 translateAmount);
         void SetTranslation(glm::vec3 newPosition);
 
+        static Mesh CreatePlaneMesh(float size, Texture texture);
+        static Mesh CreateCubeMesh(float size, Texture texture);
+
     private:
         unsigned int VAO;
         unsigned int VBO;
